@@ -3,6 +3,7 @@ package com.adelsonsljunior.simpleecommerce.application.adapters.controllers;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductRequestDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductResponseDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.ProductServicePort;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ResponseEntity<ProductResponseDTO> create(@RequestBody ProductRequestDTO data) {
+    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO data) {
 
         ProductResponseDTO createdProduct = this.productServicePort.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @RequestBody ProductRequestDTO data) {
+    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO data) {
 
         try {
             ProductResponseDTO updatedProduct = this.productServicePort.update(id, data);
