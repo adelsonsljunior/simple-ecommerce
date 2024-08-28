@@ -3,6 +3,7 @@ package com.adelsonsljunior.simpleecommerce.application.adapters.controllers;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.user.UserRequestDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.user.UserResponseDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.UserServicePort;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserResponseDTO> create(@RequestBody UserRequestDTO data) {
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO data) {
 
         UserResponseDTO createdUser = userServicePort.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody UserRequestDTO data) {
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO data) {
         UserResponseDTO updatedUser = userServicePort.update(id, data);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
