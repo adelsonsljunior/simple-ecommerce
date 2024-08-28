@@ -1,5 +1,6 @@
 package com.adelsonsljunior.simpleecommerce.exceptions;
 
+import com.adelsonsljunior.simpleecommerce.responses.BadRequestResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,14 +14,16 @@ import java.util.Map;
 public class ValidationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<BadRequestResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        BadRequestResponse response = new BadRequestResponse("Invalid request", errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }
 
