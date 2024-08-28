@@ -14,45 +14,44 @@ import java.util.List;
 @RequestMapping(path = "products")
 public class ProductController {
 
-    private final ProductServicePort productServicePort;
+    private final ProductServicePort productService;
 
-    public ProductController(ProductServicePort productServicePort) {
-        this.productServicePort = productServicePort;
+    public ProductController(ProductServicePort productService) {
+        this.productService = productService;
     }
 
     @GetMapping()
     public ResponseEntity<List<ProductResponseDTO>> findAll() {
 
-        List<ProductResponseDTO> products = productServicePort.findAll();
-
+        List<ProductResponseDTO> products = productService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
     @PostMapping()
     public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO data) {
 
-        ProductResponseDTO createdProduct = this.productServicePort.create(data);
+        ProductResponseDTO createdProduct = this.productService.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
 
-        ProductResponseDTO productResponseDTO = this.productServicePort.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(productResponseDTO);
+        ProductResponseDTO foundUser = this.productService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(foundUser);
     }
 
     @PatchMapping(path = "/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO data) {
 
-        ProductResponseDTO updatedProduct = this.productServicePort.update(id, data);
+        ProductResponseDTO updatedProduct = this.productService.update(id, data);
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        this.productServicePort.delete(id);
+        this.productService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
