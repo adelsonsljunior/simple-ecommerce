@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-public class BadRequestResponse extends CustomResponse {
+public class BadRequestResponse extends ErrorResponse {
 
     @JsonProperty("errors")
     private Map<String, String> errors;
