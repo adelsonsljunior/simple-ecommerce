@@ -38,39 +38,22 @@ public class ProductController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
 
-        try {
-            ProductResponseDTO productResponseDTO = this.productServicePort.findById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(productResponseDTO);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+        ProductResponseDTO productResponseDTO = this.productServicePort.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(productResponseDTO);
     }
 
     @PatchMapping(path = "/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO data) {
 
-        try {
-            ProductResponseDTO updatedProduct = this.productServicePort.update(id, data);
-            return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
-        } catch (RuntimeException e) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+        ProductResponseDTO updatedProduct = this.productServicePort.update(id, data);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        try {
-
-            this.productServicePort.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        this.productServicePort.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

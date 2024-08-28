@@ -2,10 +2,10 @@ package com.adelsonsljunior.simpleecommerce.infra.adapters.repositories;
 
 import com.adelsonsljunior.simpleecommerce.core.domain.Product;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.ProductRepositoryPort;
+import com.adelsonsljunior.simpleecommerce.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ProductRepository implements ProductRepositoryPort {
@@ -28,6 +28,10 @@ public class ProductRepository implements ProductRepositoryPort {
 
     @Override
     public void delete(Long id) {
+
+        this.springProductRepository.findByIdActive(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
         this.springProductRepository.softDeleteById(id);
     }
 
@@ -37,9 +41,9 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        return this.springProductRepository.findByIdActive(id);
+    public Product findById(Long id) {
+        return this.springProductRepository.findByIdActive(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
-
 
 }

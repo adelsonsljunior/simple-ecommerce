@@ -1,4 +1,4 @@
-package com.adelsonsljunior.simpleecommerce.core.domain.adapters;
+package com.adelsonsljunior.simpleecommerce.core.domain.adapters.services;
 
 import com.adelsonsljunior.simpleecommerce.core.domain.Product;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductRequestDTO;
@@ -7,7 +7,6 @@ import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.Produc
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.ProductServicePort;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProductServiceImp implements ProductServicePort {
@@ -37,23 +36,13 @@ public class ProductServiceImp implements ProductServicePort {
 
     @Override
     public ProductResponseDTO findById(Long id) {
-        Optional<Product> foundProduct = this.productRepository.findById(id);
+        Product foundProduct = this.productRepository.findById(id);
 
-        if (foundProduct.isEmpty()) {
-            throw new RuntimeException("Product not found");
-        }
-
-        return foundProduct.map(Product::toProductResponseDTO).orElse(null);
+        return foundProduct.toProductResponseDTO();
     }
 
     @Override
     public void delete(Long id) {
-
-        Optional<Product> foundProduct = this.productRepository.findById(id);
-
-        if (foundProduct.isEmpty()) {
-            throw new RuntimeException("Product not found");
-        }
 
         this.productRepository.delete(id);
     }
@@ -61,19 +50,14 @@ public class ProductServiceImp implements ProductServicePort {
     @Override
     public ProductResponseDTO update(Long id, ProductRequestDTO product) {
 
-        Optional<Product> foundProduct = this.productRepository.findById(id);
+        Product foundProduct = this.productRepository.findById(id);
 
-        if (foundProduct.isEmpty()) {
-           throw new RuntimeException("Product not found");
-        }
+        foundProduct.setName(product.name());
+        foundProduct.setDescription(product.description());
+        foundProduct.setQuantity(product.quantity());
+        foundProduct.setPrice(product.price());
 
-        Product p = foundProduct.get();
-        p.setName(product.name());
-        p.setDescription(product.description());
-        p.setQuantity(product.quantity());
-        p.setPrice(product.price());
-
-        Product updatedProduct = this.productRepository.update(p);
+        Product updatedProduct = this.productRepository.update(foundProduct);
         return updatedProduct.toProductResponseDTO();
     }
 
