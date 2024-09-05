@@ -3,6 +3,7 @@ package com.adelsonsljunior.simpleecommerce.application.adapters.controllers;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.sale.SaleRequestDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.sale.SaleResponseDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.SaleServicePort;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +33,14 @@ public class SaleController {
     }
 
     @PostMapping()
-    public ResponseEntity<SaleResponseDTO> create(@RequestBody SaleRequestDTO data) {
+    public ResponseEntity<SaleResponseDTO> create(@Valid @RequestBody  SaleRequestDTO data) {
 
         SaleResponseDTO createdSale = saleService.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSale);
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<SaleResponseDTO> update(@PathVariable Long id, @RequestBody SaleRequestDTO data) {
+    public ResponseEntity<SaleResponseDTO> update(@Valid @PathVariable Long id, @RequestBody SaleRequestDTO data) {
 
         SaleResponseDTO updatedSale = saleService.update(id, data);
         return ResponseEntity.status(HttpStatus.OK).body(updatedSale);
