@@ -28,34 +28,34 @@ public class ProductServiceImp implements ProductServicePort {
     }
 
     @Override
-    public ProductResponseDTO create(ProductRequestDTO product) {
-        Product p = new Product(product);
-        Product createdProduct = this.productRepository.create(p);
+    public ProductResponseDTO create(ProductRequestDTO productRequest) {
+        Product product = new Product(productRequest);
+        Product createdProduct = this.productRepository.create(product);
         return createdProduct.toProductResponseDTO();
     }
 
     @Override
-    public ProductResponseDTO findById(Long id) {
-        Product foundProduct = this.productRepository.findById(id);
+    public ProductResponseDTO findById(Long productId) {
+        Product foundProduct = this.productRepository.findById(productId);
 
         return foundProduct.toProductResponseDTO();
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long productId) {
 
-        this.productRepository.delete(id);
+        this.productRepository.delete(productId);
     }
 
     @Override
-    public ProductResponseDTO update(Long id, ProductRequestDTO product) {
+    public ProductResponseDTO update(Long id, ProductRequestDTO productRequest) {
 
         Product foundProduct = this.productRepository.findById(id);
 
-        foundProduct.setName(product.name());
-        foundProduct.setDescription(product.description());
-        foundProduct.setStock(product.stock());
-        foundProduct.setPrice(product.price());
+        foundProduct.setName(productRequest.name());
+        foundProduct.setDescription(productRequest.description());
+        foundProduct.setStock(productRequest.stock());
+        foundProduct.setPrice(productRequest.price());
 
         Product updatedProduct = this.productRepository.update(foundProduct);
         return updatedProduct.toProductResponseDTO();

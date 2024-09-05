@@ -28,12 +28,12 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long productId) {
 
-        this.springProductRepository.findByIdActive(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        this.springProductRepository.findByIdActive(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found for id: " + productId));
 
-        this.springProductRepository.softDeleteById(id);
+        this.springProductRepository.softDeleteById(productId);
     }
 
     @Override
@@ -42,9 +42,9 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public Product findById(Long id) {
-        return this.springProductRepository.findByIdActive(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    public Product findById(Long productId) {
+        return this.springProductRepository.findByIdActive(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found for id: " + productId));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ProductRepository implements ProductRepositoryPort {
     public void incrementStock(Long productId, int quantity) {
         int updatedRows = this.springProductRepository.incrementStock(productId, quantity);
         if (updatedRows == 0) {
-            throw new ResourceNotFoundException("Product could not be restocked");
+            throw new ResourceNotFoundException("Product could not be restocked for id: " + productId);
         }
     }
 

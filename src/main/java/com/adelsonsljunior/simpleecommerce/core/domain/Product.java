@@ -48,7 +48,7 @@ public class Product {
         this.price = productDTO.price();
     }
 
-    public ProductResponseDTO toProductResponseDTO(){
+    public ProductResponseDTO toProductResponseDTO() {
         return new ProductResponseDTO(
                 this.id,
                 this.name,

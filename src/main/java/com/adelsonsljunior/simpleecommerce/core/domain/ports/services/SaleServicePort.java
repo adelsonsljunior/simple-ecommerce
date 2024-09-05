@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface SaleServicePort {
 
-    SaleResponseDTO create(SaleRequestDTO sale);
+    SaleResponseDTO create(SaleRequestDTO saleRequest);
     List<SaleResponseDTO> findAll();
-    SaleResponseDTO findById(Long id);
-    SaleResponseDTO update(Long id, SaleRequestDTO sale);
-    void delete(Long id);
+    SaleResponseDTO findById(Long saleId);
+    SaleResponseDTO update(Long saleId, SaleRequestDTO saleRequest);
+    void delete(Long saleId);
 
 }

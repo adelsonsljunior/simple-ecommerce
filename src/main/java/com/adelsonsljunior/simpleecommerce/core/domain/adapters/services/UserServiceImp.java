@@ -18,10 +18,10 @@ public class UserServiceImp implements UserServicePort {
     }
 
     @Override
-    public UserResponseDTO create(UserRequestDTO user) {
+    public UserResponseDTO create(UserRequestDTO userRequest) {
 
-        User u = new User(user);
-        User createdUser = this.userRepository.create(u);
+        User user = new User(userRequest);
+        User createdUser = this.userRepository.create(user);
         return createdUser.toUserResponseDTO();
     }
 
@@ -36,25 +36,25 @@ public class UserServiceImp implements UserServicePort {
     }
 
     @Override
-    public UserResponseDTO findById(Long id) {
-        User foundUser = this.userRepository.findById(id);
+    public UserResponseDTO findById(Long userId) {
+        User foundUser = this.userRepository.findById(userId);
         return foundUser.toUserResponseDTO();
     }
 
     @Override
-    public UserResponseDTO update(Long id, UserRequestDTO user) {
+    public UserResponseDTO update(Long userId, UserRequestDTO userRequest) {
 
-        User foundUser = this.userRepository.findById(id);
-        foundUser.setUsername(user.username());
-        foundUser.setEmail(user.email());
-        foundUser.setPassword(user.password());
+        User foundUser = this.userRepository.findById(userId);
+        foundUser.setUsername(userRequest.username());
+        foundUser.setEmail(userRequest.email());
+        foundUser.setPassword(userRequest.password());
 
         User updatedUser = this.userRepository.update(foundUser);
         return updatedUser.toUserResponseDTO();
     }
 
     @Override
-    public void delete(Long id) {
-        this.userRepository.delete(id);
+    public void delete(Long userId) {
+        this.userRepository.delete(userId);
     }
 }

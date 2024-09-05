@@ -24,7 +24,7 @@ public class UserRepository implements UserRepositoryPort {
     @Override
     public User findById(Long id) {
         return this.springUserRepository.findByIdActive(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
     }
 
     @Override
@@ -38,11 +38,11 @@ public class UserRepository implements UserRepositoryPort {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long userId) {
 
-        this.springUserRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        this.springUserRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for id:" + userId));
 
-        this.springUserRepository.softDeleteById(id);
+        this.springUserRepository.softDeleteById(userId);
     }
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ProductServicePort {
     List<ProductResponseDTO> findAll();
-    ProductResponseDTO create(ProductRequestDTO product);
-    void delete(Long id);
-    ProductResponseDTO update(Long id, ProductRequestDTO product);
-    ProductResponseDTO findById(Long id);
+    ProductResponseDTO create(ProductRequestDTO productRequest);
+    void delete(Long productId);
+    ProductResponseDTO update(Long id, ProductRequestDTO productRequest);
+    ProductResponseDTO findById(Long productId);
 }

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface UserServicePort {
 
-    UserResponseDTO create(UserRequestDTO user);
+    UserResponseDTO create(UserRequestDTO userRequest);
     List<UserResponseDTO> findAll();
-    UserResponseDTO findById(Long id);
-    UserResponseDTO update(Long id, UserRequestDTO user);
-    void delete(Long id);
+    UserResponseDTO findById(Long userId);
+    UserResponseDTO update(Long userId, UserRequestDTO userRequest);
+    void delete(Long userId);
 }

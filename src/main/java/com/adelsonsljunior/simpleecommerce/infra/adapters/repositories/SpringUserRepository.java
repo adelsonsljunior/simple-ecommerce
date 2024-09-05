@@ -4,6 +4,7 @@ import com.adelsonsljunior.simpleecommerce.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +21,8 @@ public interface SpringUserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE User u SET u.deleted = true WHERE u.id = :id")
-    void softDeleteById(Long id);
+    void softDeleteById(@Param("id") Long id);
 
     @Query("SELECT u FROM User u WHERE u.id = :id and u.deleted = false")
-    Optional<User> findByIdActive(Long id);
+    Optional<User> findByIdActive(@Param("id") Long id);
 }

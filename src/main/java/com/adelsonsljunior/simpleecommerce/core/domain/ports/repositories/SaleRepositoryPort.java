@@ -9,6 +9,6 @@ public interface SaleRepositoryPort {
     List<Sale> findAll();
     Sale create(Sale sale);
     Sale update(Sale sale);
-    void delete(Long id);
-    Sale findById(Long id);
+    void delete(Long saleId);
+    Sale findById(Long saleId);
 }

@@ -78,20 +78,20 @@ public class SaleServiceImp implements SaleServicePort {
     }
 
     @Override
-    public SaleResponseDTO findById(Long id) {
-        Sale foundSale = this.saleRepository.findById(id);
+    public SaleResponseDTO findById(Long saleId) {
+        Sale foundSale = this.saleRepository.findById(saleId);
         return foundSale.toSaleResponseDTO();
     }
 
     @Override
-    public void delete(Long id) {
-        this.saleRepository.delete(id);
+    public void delete(Long saleId) {
+        this.saleRepository.delete(saleId);
     }
 
     @Override
-    public SaleResponseDTO update(Long id, SaleRequestDTO saleRequest) {
+    public SaleResponseDTO update(Long saleId, SaleRequestDTO saleRequest) {
 
-        Sale sale = this.saleRepository.findById(id);
+        Sale sale = this.saleRepository.findById(saleId);
 
         User user = this.userRepository.findById(saleRequest.userId());
 
@@ -114,9 +114,6 @@ public class SaleServiceImp implements SaleServicePort {
                     // Se a quantidade do produto aumentou, decrementa apenas a parte aumentada
                     if (newQuantity > oldQuantity) {
                         int increment = newQuantity - oldQuantity;
-                        if (product.getStock() < increment) {
-                            throw new IllegalArgumentException("Insufficient stock for product: " + product.getName());
-                        }
                         this.productRepository.decrementStock(product.getId(), increment);
                     }
                     // Se a quantidade do produto diminuiu, incrementa o estoque com a parte liberada

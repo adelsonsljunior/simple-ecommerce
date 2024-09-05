@@ -8,9 +8,9 @@ public interface ProductRepositoryPort {
 
     List<Product> findAll();
     Product create(Product product);
-    void delete(Long id);
+    void delete(Long productId);
     Product update(Product product);
-    Product findById(Long id);
+    Product findById(Long productId);
     void decrementStock(Long productId, int quantity);
     void incrementStock(Long productId, int quantity);
 
