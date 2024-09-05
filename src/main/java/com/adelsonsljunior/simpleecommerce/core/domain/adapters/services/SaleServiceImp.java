@@ -11,6 +11,8 @@ import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.SaleRe
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.UserRepositoryPort;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.SaleServicePort;
 
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -142,4 +144,36 @@ public class SaleServiceImp implements SaleServicePort {
 
         return updatedSale.toSaleResponseDTO();
     }
+
+    @Override
+    public List<SaleResponseDTO> findByDate(LocalDate date) {
+
+        List<Sale> sales = this.saleRepository.findByDate(date);
+        return sales.stream()
+                .map(Sale::toSaleResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SaleResponseDTO> findByMonth(int month, int year) {
+
+        List<Sale> sales = this.saleRepository.findByMonth(month, year);
+        return sales.stream()
+                .map(Sale::toSaleResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SaleResponseDTO> findByCurrentWeek() {
+
+        LocalDate now = LocalDate.now();
+        int year = now.getYear();
+        int week = now.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+
+        List<Sale> sales = this.saleRepository.findByCurrentWeek(year, week);
+        return sales.stream()
+                .map(Sale::toSaleResponseDTO)
+                .collect(Collectors.toList());
+    }
+
 }

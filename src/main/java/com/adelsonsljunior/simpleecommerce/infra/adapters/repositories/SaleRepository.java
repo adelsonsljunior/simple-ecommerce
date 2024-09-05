@@ -5,6 +5,7 @@ import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.SaleRe
 import com.adelsonsljunior.simpleecommerce.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -44,5 +45,20 @@ public class SaleRepository implements SaleRepositoryPort {
     public Sale findById(Long saleId) {
         return this.springSaleRepository.findByIdActive(saleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
+    }
+
+    @Override
+    public List<Sale> findByDate(LocalDate date) {
+        return this.springSaleRepository.findByDate(date);
+    }
+
+    @Override
+    public List<Sale> findByMonth(int month, int year) {
+        return this.springSaleRepository.findByMonth(month, year);
+    }
+
+    @Override
+    public List<Sale> findByCurrentWeek(int year, int week) {
+        return this.springSaleRepository.findByCurrentWeek(year, week);
     }
 }
