@@ -14,42 +14,42 @@ import java.util.List;
 @RequestMapping(path = "users")
 public class UserController {
 
-    private final UserServicePort userServicePort;
+    private final UserServicePort userService;
 
     public UserController(UserServicePort userServicePort) {
-        this.userServicePort = userServicePort;
+        this.userService = userServicePort;
     }
 
     @GetMapping()
     public ResponseEntity<List<UserResponseDTO>> findAll() {
-        List<UserResponseDTO> users = userServicePort.findAll();
+        List<UserResponseDTO> users = userService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @PostMapping()
     public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO data) {
 
-        UserResponseDTO createdUser = userServicePort.create(data);
+        UserResponseDTO createdUser = this.userService.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
 
-        UserResponseDTO foundUser = userServicePort.findById(id);
+        UserResponseDTO foundUser = this.userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(foundUser);
     }
 
     @PatchMapping(path = "/{id}")
     public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO data) {
-        UserResponseDTO updatedUser = userServicePort.update(id, data);
+        UserResponseDTO updatedUser = this.userService.update(id, data);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
 
-        this.userServicePort.delete(id);
+        this.userService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
