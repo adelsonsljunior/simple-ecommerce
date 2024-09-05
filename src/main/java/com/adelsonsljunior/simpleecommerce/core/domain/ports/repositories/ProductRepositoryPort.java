@@ -11,4 +11,7 @@ public interface ProductRepositoryPort {
     void delete(Long id);
     Product update(Product product);
     Product findById(Long id);
+    void decrementStock(Long productId, int quantity);
+    void incrementStock(Long productId, int quantity);
+
 }

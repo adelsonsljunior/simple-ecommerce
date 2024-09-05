@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,9 +25,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+
+    // Um usuário pode ter várias vendas
+    @OneToMany(mappedBy = "user")
+    private List<Sale> sales;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

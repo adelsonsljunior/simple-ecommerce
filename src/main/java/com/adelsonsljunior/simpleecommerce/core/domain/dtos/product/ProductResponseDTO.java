@@ -6,7 +6,7 @@ public record ProductResponseDTO(
         Long id,
         String name,
         String description,
-        int quantity,
+        int stock,
         double price,
         LocalDateTime createdAt,
         LocalDateTime updatedAt

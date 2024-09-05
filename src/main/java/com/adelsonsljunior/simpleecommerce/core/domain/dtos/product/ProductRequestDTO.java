@@ -11,8 +11,8 @@ public record ProductRequestDTO(
         @NotBlank(message = "{product.description.not.blank}")
         @Size(max = 500, message = "{product.description.size}")
         String description,
-        @Positive(message = "{product.quantity.positive}")
-        int quantity,
+        @Positive(message = "{product.stock.positive}")
+        int stock,
         @Positive(message = "{product.price.positive}")
         double price
 ) {

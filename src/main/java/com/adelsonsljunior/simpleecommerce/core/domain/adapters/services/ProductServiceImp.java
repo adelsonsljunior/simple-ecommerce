@@ -54,7 +54,7 @@ public class ProductServiceImp implements ProductServicePort {
 
         foundProduct.setName(product.name());
         foundProduct.setDescription(product.description());
-        foundProduct.setQuantity(product.quantity());
+        foundProduct.setStock(product.stock());
         foundProduct.setPrice(product.price());
 
         Product updatedProduct = this.productRepository.update(foundProduct);

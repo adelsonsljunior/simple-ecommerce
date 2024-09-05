@@ -29,7 +29,7 @@ public class Product {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private int quantity;
+    private int stock;
     @Column(nullable = false)
     private double price;
     @CreationTimestamp
@@ -44,7 +44,7 @@ public class Product {
     public Product(ProductRequestDTO productDTO) {
         this.name = productDTO.name();
         this.description = productDTO.description();
-        this.quantity = productDTO.quantity();
+        this.stock = productDTO.stock();
         this.price = productDTO.price();
     }
 
@@ -53,7 +53,7 @@ public class Product {
                 this.id,
                 this.name,
                 this.description,
-                this.quantity,
+                this.stock,
                 this.price,
                 this.createdAt,
                 this.updatedAt);

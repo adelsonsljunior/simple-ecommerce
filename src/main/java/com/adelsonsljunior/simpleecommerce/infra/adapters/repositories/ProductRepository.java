@@ -2,6 +2,7 @@ package com.adelsonsljunior.simpleecommerce.infra.adapters.repositories;
 
 import com.adelsonsljunior.simpleecommerce.core.domain.Product;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.ProductRepositoryPort;
+import com.adelsonsljunior.simpleecommerce.exceptions.InsufficientStockException;
 import com.adelsonsljunior.simpleecommerce.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +45,26 @@ public class ProductRepository implements ProductRepositoryPort {
     public Product findById(Long id) {
         return this.springProductRepository.findByIdActive(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    }
+
+    @Override
+    public void decrementStock(Long productId, int quantity) {
+
+        int affectedRows = this.springProductRepository.decrementProductStock(productId, quantity);
+
+        if (affectedRows == 0) {
+            // Se nenhuma linha foi afetada ou a quantidade solicitada
+            // é maior do que o estoque disponível
+            throw new InsufficientStockException("Not enough stock for product id: " + productId);
+        }
+    }
+
+    @Override
+    public void incrementStock(Long productId, int quantity) {
+        int updatedRows = this.springProductRepository.incrementStock(productId, quantity);
+        if (updatedRows == 0) {
+            throw new ResourceNotFoundException("Product could not be restocked");
+        }
     }
 
 }
