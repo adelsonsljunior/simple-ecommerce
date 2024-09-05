@@ -1,5 +1,6 @@
 package com.adelsonsljunior.simpleecommerce.core.domain.dtos.sale;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public record SaleResponseDTO(
         Long userId,
         double totalAmount,
         List<SaleProductDTO> saleProducts,
-        LocalDateTime saleDate,
+        LocalDate saleDate,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
