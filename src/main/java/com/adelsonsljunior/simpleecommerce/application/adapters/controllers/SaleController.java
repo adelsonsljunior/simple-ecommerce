@@ -3,6 +3,7 @@ package com.adelsonsljunior.simpleecommerce.application.adapters.controllers;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.sale.SaleRequestDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.sale.SaleResponseDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.SaleServicePort;
+import com.adelsonsljunior.simpleecommerce.infra.configs.log.LogExecutionTime;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class SaleController {
         this.saleService = saleService;
     }
 
+    @LogExecutionTime
     @GetMapping()
     public ResponseEntity<List<SaleResponseDTO>> findAll() {
         List<SaleResponseDTO> sales = this.saleService.findAll();

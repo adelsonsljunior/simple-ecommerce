@@ -5,6 +5,8 @@ import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductReque
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductResponseDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.ProductRepositoryPort;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.ProductServicePort;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ public class ProductServiceImp implements ProductServicePort {
         this.productRepository = productRepository;
     }
 
+    @Cacheable("products")
     @Override
     public List<ProductResponseDTO> findAll() {
         List<Product> products = this.productRepository.findAll();
@@ -27,6 +30,7 @@ public class ProductServiceImp implements ProductServicePort {
                 .collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Override
     public ProductResponseDTO create(ProductRequestDTO productRequest) {
         Product product = new Product(productRequest);
@@ -41,12 +45,14 @@ public class ProductServiceImp implements ProductServicePort {
         return foundProduct.toProductResponseDTO();
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Override
     public void delete(Long productId) {
 
         this.productRepository.delete(productId);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Override
     public ProductResponseDTO update(Long id, ProductRequestDTO productRequest) {
 

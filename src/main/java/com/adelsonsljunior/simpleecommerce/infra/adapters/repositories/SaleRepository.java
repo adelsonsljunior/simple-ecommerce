@@ -36,7 +36,7 @@ public class SaleRepository implements SaleRepositoryPort {
     public void delete(Long saleId) {
 
         this.springSaleRepository.findByIdActive(saleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Sale not found for id: " + saleId));
 
         this.springSaleRepository.softDelete(saleId);
     }
@@ -44,7 +44,7 @@ public class SaleRepository implements SaleRepositoryPort {
     @Override
     public Sale findById(Long saleId) {
         return this.springSaleRepository.findByIdActive(saleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Sale not found for id: " + saleId));
     }
 
     @Override

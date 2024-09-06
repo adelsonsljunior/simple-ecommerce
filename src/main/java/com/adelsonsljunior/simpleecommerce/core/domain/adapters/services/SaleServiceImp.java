@@ -10,6 +10,8 @@ import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.Produc
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.SaleRepositoryPort;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.UserRepositoryPort;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.SaleServicePort;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
@@ -29,6 +31,7 @@ public class SaleServiceImp implements SaleServicePort {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "sales", allEntries = true)
     @Override
     public SaleResponseDTO create(SaleRequestDTO saleRequest) {
 
@@ -71,6 +74,7 @@ public class SaleServiceImp implements SaleServicePort {
                 .sum();
     }
 
+    @Cacheable(value = "sales")
     @Override
     public List<SaleResponseDTO> findAll() {
         List<Sale> sales = this.saleRepository.findAll();
@@ -85,11 +89,13 @@ public class SaleServiceImp implements SaleServicePort {
         return foundSale.toSaleResponseDTO();
     }
 
+    @CacheEvict(value = "sales", allEntries = true)
     @Override
     public void delete(Long saleId) {
         this.saleRepository.delete(saleId);
     }
 
+    @CacheEvict(value = "sales", allEntries = true)
     @Override
     public SaleResponseDTO update(Long saleId, SaleRequestDTO saleRequest) {
 

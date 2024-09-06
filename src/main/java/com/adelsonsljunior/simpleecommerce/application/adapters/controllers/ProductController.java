@@ -3,6 +3,7 @@ package com.adelsonsljunior.simpleecommerce.application.adapters.controllers;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductRequestDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.product.ProductResponseDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.services.ProductServicePort;
+import com.adelsonsljunior.simpleecommerce.infra.configs.log.LogExecutionTime;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @LogExecutionTime
     @GetMapping()
     public ResponseEntity<List<ProductResponseDTO>> findAll() {
 

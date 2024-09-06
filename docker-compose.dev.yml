@@ -1,4 +1,4 @@
-name: sistema-apoio-desabrigados
+name: simple-ecommerce
 services:
   postgres:
     image: postgres:16-alpine3.20
