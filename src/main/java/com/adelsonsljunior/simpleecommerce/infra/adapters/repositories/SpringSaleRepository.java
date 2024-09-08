@@ -1,6 +1,6 @@
 package com.adelsonsljunior.simpleecommerce.infra.adapters.repositories;
 
-import com.adelsonsljunior.simpleecommerce.core.domain.Sale;
+import com.adelsonsljunior.simpleecommerce.infra.entities.SaleEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,26 +13,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SpringSaleRepository extends JpaRepository<Sale, Long> {
+public interface SpringSaleRepository extends JpaRepository<SaleEntity, Long> {
 
-    @Query("SELECT s FROM Sale s  WHERE s.deleted = false")
-    List<Sale> findAllActive();
+    @Query("SELECT s FROM SaleEntity s  WHERE s.deleted = false")
+    List<SaleEntity> findAllActive();
 
-    @Query("SELECT s FROM Sale s WHERE s.deleted = false and s.id = :id")
-    Optional<Sale> findByIdActive(@Param("id") Long id);
+    @Query("SELECT s FROM SaleEntity s WHERE s.deleted = false and s.id = :id")
+    Optional<SaleEntity> findByIdActive(@Param("id") Long id);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Sale s SET s.deleted = true WHERE s.id = :id")
+    @Query("UPDATE SaleEntity s SET s.deleted = true WHERE s.id = :id")
     void softDelete(@Param("id") Long id);
 
-    @Query("SELECT s FROM Sale s WHERE DATE(s.saleDate) = :date")
-    List<Sale> findByDate(@Param("date") LocalDate date);
+    @Query("SELECT s FROM SaleEntity s WHERE DATE(s.saleDate) = :date")
+    List<SaleEntity> findByDate(@Param("date") LocalDate date);
 
-    @Query("SELECT s FROM Sale s WHERE MONTH(s.saleDate) = :month AND YEAR(s.saleDate) = :year")
-    List<Sale> findByMonth(@Param("month") int month, @Param("year") int year);
+    @Query("SELECT s FROM SaleEntity s WHERE MONTH(s.saleDate) = :month AND YEAR(s.saleDate) = :year")
+    List<SaleEntity> findByMonth(@Param("month") int month, @Param("year") int year);
 
-    @Query("SELECT s FROM Sale s WHERE YEAR(s.saleDate) = :year AND WEEK(s.saleDate) = :week")
-    List<Sale> findByCurrentWeek(@Param("year") int year, @Param("week") int week);
+    @Query("SELECT s FROM SaleEntity s WHERE YEAR(s.saleDate) = :year AND WEEK(s.saleDate) = :week")
+    List<SaleEntity> findByCurrentWeek(@Param("year") int year, @Param("week") int week);
 
 }

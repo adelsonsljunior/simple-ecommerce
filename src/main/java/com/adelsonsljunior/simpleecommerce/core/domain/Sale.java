@@ -1,62 +1,52 @@
 package com.adelsonsljunior.simpleecommerce.core.domain;
 
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.sale.SaleResponseDTO;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "sales")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class Sale {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sale_id")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    private List<SaleProduct> saleProducts;
+    private double totalAmount;
+    private LocalDate saleDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     /*
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            // Tabela intermediária para armazenar as relações Sale-Product
-            name = "sale_products",
-            joinColumns = @JoinColumn(name = "sale_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    public Sale(Long id, List<SaleProduct> saleProducts, User user, double totalAmount, LocalDate saleDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.saleProducts = saleProducts;
+        this.user = user;
+        this.totalAmount = totalAmount;
+        this.saleDate = saleDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
     */
 
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<SaleProduct> saleProducts;
+    public Sale() {
+    }
 
-    @Column(nullable = false)
-    private double totalAmount;
-    @Column(name = "sale_date", nullable = false)
-    private LocalDate saleDate;
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean deleted;
+    public Sale(Long id, List<SaleProduct> saleProducts, User user, double totalAmount, LocalDate saleDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.saleProducts = saleProducts;
+        this.user = user;
+        this.totalAmount = totalAmount;
+        this.saleDate = saleDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+
+        // Set back-reference of sale in saleProducts
+        this.saleProducts.forEach(saleProduct -> saleProduct.setSale(this));
+    }
+
 
     public SaleResponseDTO toSaleResponseDTO() {
 
@@ -71,6 +61,56 @@ public class Sale {
                 this.createdAt,
                 this.updatedAt
         );
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDate getSaleDate() {
+        return saleDate;
+    }
+
+    public void setSaleDate(LocalDate saleDate) {
+        this.saleDate = saleDate;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public List<SaleProduct> getSaleProducts() {
+        return saleProducts;
+    }
+
+    public void setSaleProducts(List<SaleProduct> saleProducts) {
+        this.saleProducts = saleProducts;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
 

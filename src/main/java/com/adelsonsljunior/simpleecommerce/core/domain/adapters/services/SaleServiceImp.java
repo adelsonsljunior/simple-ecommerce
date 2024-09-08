@@ -78,6 +78,7 @@ public class SaleServiceImp implements SaleServicePort {
     @Override
     public List<SaleResponseDTO> findAll() {
         List<Sale> sales = this.saleRepository.findAll();
+        System.out.println("O SERVICE PEGOU NO SERVICE");
         return sales.stream()
                 .map(Sale::toSaleResponseDTO)
                 .collect(Collectors.toList());
@@ -102,13 +103,15 @@ public class SaleServiceImp implements SaleServicePort {
         Sale sale = this.saleRepository.findById(saleId);
 
         User user = this.userRepository.findById(saleRequest.userId());
-
         sale.setUser(user);
         sale.setSaleDate(saleRequest.saleDate());
 
         // Mapeia os produtos da venda existente em um mapa para comparação
         Map<Long, SaleProduct> existingSaleProducts = sale.getSaleProducts().stream()
-                .collect(Collectors.toMap(sp -> sp.getProduct().getId(), sp -> sp));
+                .collect(Collectors.toMap(
+                        sp -> sp.getProduct().getId(),
+                        sp -> sp,
+                        (sp1, sp2) -> sp1)); // Resolve duplicatas mantendo o primeiro
 
         List<SaleProduct> updatedSaleProducts = saleRequest.saleProducts().stream()
                 .map(saleProductDTO -> {
@@ -130,7 +133,6 @@ public class SaleServiceImp implements SaleServicePort {
                         this.productRepository.incrementStock(product.getId(), decrement);
                     }
 
-                    // Cria ou atualiza um SaleProduct
                     SaleProduct saleProduct = existingSaleProduct != null ? existingSaleProduct : new SaleProduct();
                     saleProduct.setProduct(product);
                     saleProduct.setQuantity(newQuantity);
@@ -139,7 +141,6 @@ public class SaleServiceImp implements SaleServicePort {
                     return saleProduct;
                 })
                 .collect(Collectors.toList());
-
 
         double totalAmount = calculateTotalAmount(updatedSaleProducts);
 
@@ -150,6 +151,7 @@ public class SaleServiceImp implements SaleServicePort {
 
         return updatedSale.toSaleResponseDTO();
     }
+
 
     @Override
     public List<SaleResponseDTO> findByDate(LocalDate date) {

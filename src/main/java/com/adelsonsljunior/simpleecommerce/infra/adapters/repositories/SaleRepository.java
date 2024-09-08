@@ -3,10 +3,12 @@ package com.adelsonsljunior.simpleecommerce.infra.adapters.repositories;
 import com.adelsonsljunior.simpleecommerce.core.domain.Sale;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.SaleRepositoryPort;
 import com.adelsonsljunior.simpleecommerce.exceptions.ResourceNotFoundException;
+import com.adelsonsljunior.simpleecommerce.infra.entities.SaleEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SaleRepository implements SaleRepositoryPort {
@@ -19,17 +21,26 @@ public class SaleRepository implements SaleRepositoryPort {
 
     @Override
     public List<Sale> findAll() {
-        return this.springSaleRepository.findAllActive();
+        System.out.println("ENTROU NO REPOSITOTY");
+        List<SaleEntity> sales = this.springSaleRepository.findAllActive();
+
+        return sales.stream()
+                .map(SaleEntity::toSale)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Sale create(Sale sale) {
-        return this.springSaleRepository.save(sale);
+        SaleEntity saleEntity = new SaleEntity(sale);
+        SaleEntity createdSale = this.springSaleRepository.save(saleEntity);
+        return createdSale.toSale();
     }
 
     @Override
     public Sale update(Sale sale) {
-        return this.springSaleRepository.save(sale);
+        SaleEntity saleEntity = new SaleEntity(sale);
+        SaleEntity updatedSale = this.springSaleRepository.save(saleEntity);
+        return updatedSale.toSale();
     }
 
     @Override
@@ -43,22 +54,33 @@ public class SaleRepository implements SaleRepositoryPort {
 
     @Override
     public Sale findById(Long saleId) {
-        return this.springSaleRepository.findByIdActive(saleId)
+        SaleEntity foundSale = this.springSaleRepository.findByIdActive(saleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Sale not found for id: " + saleId));
+
+        return foundSale.toSale();
     }
 
     @Override
     public List<Sale> findByDate(LocalDate date) {
-        return this.springSaleRepository.findByDate(date);
+        List<SaleEntity> sales = this.springSaleRepository.findByDate(date);
+        return sales.stream()
+                .map(SaleEntity::toSale)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Sale> findByMonth(int month, int year) {
-        return this.springSaleRepository.findByMonth(month, year);
+        List<SaleEntity> sales = this.springSaleRepository.findByMonth(month, year);
+        return sales.stream()
+                .map(SaleEntity::toSale)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Sale> findByCurrentWeek(int year, int week) {
-        return this.springSaleRepository.findByCurrentWeek(year, week);
+        List<SaleEntity> sales = this.springSaleRepository.findByCurrentWeek(year, week);
+        return sales.stream()
+                .map(SaleEntity::toSale)
+                .collect(Collectors.toList());
     }
 }

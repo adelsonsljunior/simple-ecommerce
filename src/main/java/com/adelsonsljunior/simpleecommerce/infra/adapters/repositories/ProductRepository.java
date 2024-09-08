@@ -4,9 +4,11 @@ import com.adelsonsljunior.simpleecommerce.core.domain.Product;
 import com.adelsonsljunior.simpleecommerce.core.domain.ports.repositories.ProductRepositoryPort;
 import com.adelsonsljunior.simpleecommerce.exceptions.InsufficientStockException;
 import com.adelsonsljunior.simpleecommerce.exceptions.ResourceNotFoundException;
+import com.adelsonsljunior.simpleecommerce.infra.entities.ProductEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductRepository implements ProductRepositoryPort {
@@ -19,12 +21,17 @@ public class ProductRepository implements ProductRepositoryPort {
 
     @Override
     public List<Product> findAll() {
-        return springProductRepository.findAllActive();
+        List<ProductEntity> products = springProductRepository.findAllActive();
+        return products.stream()
+                .map(ProductEntity::toProduct)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Product create(Product product) {
-        return this.springProductRepository.save(product);
+        ProductEntity productEntity = new ProductEntity(product);
+        ProductEntity createdProduct = springProductRepository.save(productEntity);
+        return createdProduct.toProduct();
     }
 
     @Override
@@ -38,13 +45,17 @@ public class ProductRepository implements ProductRepositoryPort {
 
     @Override
     public Product update(Product product) {
-        return this.springProductRepository.save(product);
+        ProductEntity productEntity = new ProductEntity(product);
+        ProductEntity updatedProduct = springProductRepository.save(productEntity);
+        return updatedProduct.toProduct();
     }
 
     @Override
     public Product findById(Long productId) {
-        return this.springProductRepository.findByIdActive(productId)
+        ProductEntity foundProduct = this.springProductRepository.findByIdActive(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found for id: " + productId));
+
+        return foundProduct.toProduct();
     }
 
     @Override

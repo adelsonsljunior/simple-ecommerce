@@ -2,53 +2,39 @@ package com.adelsonsljunior.simpleecommerce.core.domain;
 
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.user.UserRequestDTO;
 import com.adelsonsljunior.simpleecommerce.core.domain.dtos.user.UserResponseDTO;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Entity
-@Table(name = "users")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
-    @Column(nullable = false)
     private String username;
-    @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
     private String password;
-
-    // Um usuário pode ter várias vendas
-    @OneToMany(mappedBy = "user")
-    private List<Sale> sales;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @UpdateTimestamp
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean deleted;
 
     public User(UserRequestDTO data) {
         this.username = data.username();
         this.email = data.email();
         this.password = data.password();
+    }
+
+    public User(Long id, LocalDateTime updatedAt, LocalDateTime createdAt, String password, String username, String email) {
+        this.id = id;
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.password = password;
+        this.username = username;
+        this.email = email;
+    }
+
+    public User(LocalDateTime updatedAt, LocalDateTime createdAt, String email, String username, String password) {
+        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
+        this.email = email;
+        this.username = username;
+        this.password = password;
     }
 
     public UserResponseDTO toUserResponseDTO() {
@@ -59,6 +45,47 @@ public class User {
                 this.createdAt,
                 this.updatedAt
         );
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
 }
