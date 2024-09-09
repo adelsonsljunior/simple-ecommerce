@@ -21,7 +21,6 @@ public class SaleRepository implements SaleRepositoryPort {
 
     @Override
     public List<Sale> findAll() {
-        System.out.println("ENTROU NO REPOSITOTY");
         List<SaleEntity> sales = this.springSaleRepository.findAllActive();
 
         return sales.stream()

@@ -38,6 +38,7 @@ public class ProductServiceImp implements ProductServicePort {
         return createdProduct.toProductResponseDTO();
     }
 
+    @Cacheable(value = "products", key = "#id")
     @Override
     public ProductResponseDTO findById(Long productId) {
         Product foundProduct = this.productRepository.findById(productId);
@@ -45,7 +46,7 @@ public class ProductServiceImp implements ProductServicePort {
         return foundProduct.toProductResponseDTO();
     }
 
-    @CacheEvict(value = "products", allEntries = true)
+    @CacheEvict(value = "products", key = "#id")
     @Override
     public void delete(Long productId) {
 

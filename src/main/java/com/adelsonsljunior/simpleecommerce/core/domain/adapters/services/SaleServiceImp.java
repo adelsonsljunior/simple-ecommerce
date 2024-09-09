@@ -84,13 +84,14 @@ public class SaleServiceImp implements SaleServicePort {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "products", key = "#id")
     @Override
     public SaleResponseDTO findById(Long saleId) {
         Sale foundSale = this.saleRepository.findById(saleId);
         return foundSale.toSaleResponseDTO();
     }
 
-    @CacheEvict(value = "sales", allEntries = true)
+    @CacheEvict(value = "sales", key = "#id")
     @Override
     public void delete(Long saleId) {
         this.saleRepository.delete(saleId);
